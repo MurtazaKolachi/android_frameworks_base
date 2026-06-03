@@ -1151,12 +1151,12 @@ int AndroidRuntime::startVm(JavaVM** pJavaVM, JNIEnv** pEnv, bool zygote, bool p
                        "-Xzygote-max-boot-retry=");
 
     // If set, the property below can be used to enable core platform API violation reporting.
-    property_get("persist.debug.dalvik.vm.core_platform_api_policy", propBuf, "");
-    if (propBuf[0] != '\0') {
+    std::string corePlatformApiPolicy = GetProperty("persist.debug.dalvik.vm.core_platform_api_policy", "");
+    if (!corePlatformApiPolicy.empty()) {
       snprintf(corePlatformApiPolicyBuf,
                sizeof(corePlatformApiPolicyBuf),
                "-Xcore-platform-api-policy:%s",
-               propBuf);
+               corePlatformApiPolicy.c_str());
       addOption(corePlatformApiPolicyBuf);
     }
 
